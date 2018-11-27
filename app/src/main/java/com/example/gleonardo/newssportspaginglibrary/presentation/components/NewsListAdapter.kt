@@ -4,11 +4,11 @@ import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.example.gleonardo.newssportspaginglibrary.data.model.News
 import com.example.gleonardo.newssportspaginglibrary.data.enum.*
+import com.example.gleonardo.newssportspaginglibrary.data.model.DomainNews
 
 class NewsListAdapter(private val retry: () -> Unit)
-    : PagedListAdapter<News, RecyclerView.ViewHolder>( NewsDiffCallback ){
+    : PagedListAdapter<DomainNews, RecyclerView.ViewHolder>( NewsDiffCallback ){
 
     private val DATA_VIEW_TYPE = 1
     private val FOOTER_VIEW_TYPE = 2
@@ -30,12 +30,12 @@ class NewsListAdapter(private val retry: () -> Unit)
     }
 
     companion object {
-        val NewsDiffCallback = object : DiffUtil.ItemCallback<News>() {
-            override fun areItemsTheSame(oldItem: News, newItem: News): Boolean {
+        val NewsDiffCallback = object : DiffUtil.ItemCallback<DomainNews>() {
+            override fun areItemsTheSame(oldItem: DomainNews, newItem: DomainNews): Boolean {
                 return oldItem.title == newItem.title
             }
 
-            override fun areContentsTheSame(oldItem: News, newItem: News): Boolean {
+            override fun areContentsTheSame(oldItem: DomainNews, newItem: DomainNews): Boolean {
                 return oldItem == newItem
             }
         }

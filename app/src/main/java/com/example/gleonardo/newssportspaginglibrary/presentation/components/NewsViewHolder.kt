@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.gleonardo.newssportspaginglibrary.R
+import com.example.gleonardo.newssportspaginglibrary.data.model.DomainNews
 import com.example.gleonardo.newssportspaginglibrary.data.model.News
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_news.view.*
 
 class NewsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    fun bind(news: News?) {
+    fun bind(news: DomainNews?) {
         if (news != null) {
             itemView.txt_news_name.text = news.title
             Picasso.get().load(news.image).into(itemView.img_news_banner)

@@ -1,33 +1,36 @@
-package com.example.gleonardo.newssportspaginglibrary.presentation
+package com.example.gleonardo.newssportspaginglibrary.presentation.view
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
+import com.example.gabri.myapplication.domain.usecase.base.BaseRequestValues
+import com.example.gabri.myapplication.domain.usecase.base.BaseUseCase
 import com.example.gleonardo.newssportspaginglibrary.data.datasource.NetworkService
-import com.example.gleonardo.newssportspaginglibrary.data.datasource.NewsDataSource
-import com.example.gleonardo.newssportspaginglibrary.data.datasource.NewsDataSourceFactory
 import com.example.gleonardo.newssportspaginglibrary.data.enum.State
+import com.example.gleonardo.newssportspaginglibrary.data.model.DomainNews
+import com.example.gleonardo.newssportspaginglibrary.data.model.DomainResponse
 import com.example.gleonardo.newssportspaginglibrary.data.model.News
+import com.example.gleonardo.newssportspaginglibrary.domain.pagingcomponents.NewsDataSource
+import com.example.gleonardo.newssportspaginglibrary.domain.pagingcomponents.NewsDataSourceFactory
 import io.reactivex.disposables.CompositeDisposable
 
-class MainViewModel: ViewModel() {
+class MainViewModel(getNewsUseCase: BaseUseCase<BaseRequestValues, DomainResponse>) : ViewModel() {
 
-    private val networkService = NetworkService.getService()
-    lateinit var newsList: LiveData<PagedList<News>>
+    lateinit var newsList: LiveData<PagedList<DomainNews>>
     private val compositeDisposable = CompositeDisposable()
     private val pageSize = 5
     private val newsDataSourceFactory: NewsDataSourceFactory
 
     init {
-        newsDataSourceFactory = NewsDataSourceFactory(compositeDisposable, networkService)
+        newsDataSourceFactory = NewsDataSourceFactory(compositeDisposable, getNewsUseCase)
         val config = PagedList.Config.Builder()
                 .setPageSize(pageSize)
                 .setInitialLoadSizeHint(pageSize * 2)
                 .setEnablePlaceholders(false)
                 .build()
-        newsList = LivePagedListBuilder<Int, News>(newsDataSourceFactory, config).build()
+        newsList = LivePagedListBuilder<Int, DomainNews>(newsDataSourceFactory, config).build()
     }
 
     fun getState(): LiveData<State> = Transformations.switchMap<NewsDataSource,
